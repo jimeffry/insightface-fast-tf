@@ -18,24 +18,25 @@ def entropy_loss(logits,labels,class_num,lr_mult=1):
     labels: Tensor of target data from the generator with shape (B, num_classes).
     logits: Tensor of predicted data from the network with shape (B,num_classes).
     '''
-    soft_logits=tf.nn.softmax(logits)
-    pred = tf.argmax(soft_logits,axis=1)
-    labels = tf.cast(tf.reshape(labels, [-1]),tf.int32)
-    labels_hot = tf.one_hot(labels,class_num)
-    batch_size = logits.get_shape()[0]
-    labels_hot = tf.reshape(labels_hot,[batch_size,-1])
-    #cross_entropy = tf.losses.softmax_cross_entropy(labels_hot,logits)
-    cross_entropy = -tf.reduce_sum(labels_hot * tf.log(soft_logits), axis=1)
-    '''
-    bg = tf.zeros_like(labels,dtype=tf.float32)
-    ones_ = tf.ones_like(labels,dtype=tf.float32)
-    fg = tf.constant(lr_mult,shape=[batch_size],dtype=tf.float32)
-    wd = tf.where(tf.greater(tf.cast(labels,tf.float32),bg),fg,ones_)
-    pred_wd = tf.where(tf.equal(labels,tf.cast(pred,tf.int32)),ones_,wd)
-    pred_wd_stop = tf.stop_gradient(pred_wd)
-    cross_entropy = cross_entropy * pred_wd_stop
-    '''
-    cross_loss = tf.reduce_mean(cross_entropy)
+    with tf.device('/cpu:0'):
+        soft_logits=tf.nn.softmax(logits)
+        #pred = tf.argmax(soft_logits,axis=1)
+        labels = tf.cast(tf.reshape(labels, [-1]),tf.int32)
+        labels_hot = tf.one_hot(labels,class_num)
+        batch_size = logits.get_shape()[0]
+        labels_hot = tf.reshape(labels_hot,[batch_size,-1])
+        #cross_entropy = tf.losses.softmax_cross_entropy(labels_hot,logits)
+        cross_entropy = -tf.reduce_sum(labels_hot * tf.log(soft_logits), axis=1)
+        '''
+        bg = tf.zeros_like(labels,dtype=tf.float32)
+        ones_ = tf.ones_like(labels,dtype=tf.float32)
+        fg = tf.constant(lr_mult,shape=[batch_size],dtype=tf.float32)
+        wd = tf.where(tf.greater(tf.cast(labels,tf.float32),bg),fg,ones_)
+        pred_wd = tf.where(tf.equal(labels,tf.cast(pred,tf.int32)),ones_,wd)
+        pred_wd_stop = tf.stop_gradient(pred_wd)
+        cross_entropy = cross_entropy * pred_wd_stop
+        '''
+        cross_loss = tf.reduce_mean(cross_entropy)
     return cross_loss,soft_logits
 
 def focal_loss(logits,labels,class_num,alpha=0.25,gamma=1):

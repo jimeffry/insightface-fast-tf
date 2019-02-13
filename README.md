@@ -42,4 +42,4 @@ Configuration parameters lies in Root/src/configs/config.py
 ## Results on Test data
 ## Cite
 * deepinsight: [deepinsight](https://github.com/deepinsight/insightface)
-* insightface-TF: [infightface-tf][https://github.com/auroua/InsightFace_TF]
+* insightface-TF: [infightface-tf](https://github.com/auroua/InsightFace_TF)

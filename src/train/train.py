@@ -121,8 +121,8 @@ def train(args):
                                      values=[y for y in cfgs.LR])
     tf.summary.scalar('lr', lr)
     # ---------------------------------------------------------------------------------------------------object func
-    #optimizer = tf.train.MomentumOptimizer(lr, momentum=cfgs.MOMENTUM)
-    optimizer = tf.train.AdamOptimizer(lr)
+    optimizer = tf.train.MomentumOptimizer(lr, momentum=cfgs.MOMENTUM)
+    #optimizer = tf.train.AdamOptimizer(lr)
     updata_op = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
     #with tf.control_dependencies(updata_op):
     train_op = optimizer.minimize(total_loss,global_step)

@@ -100,26 +100,25 @@ def combine_loss(embedding, labels, class_num, margin_a, margin_m, margin_b, s):
     ordinal_y = tf.stack([ordinal, labels], axis=1)
     zy = cos_t * s
     sel_cos_t = tf.gather_nd(zy, ordinal_y)
-    if margin_a != 1.0 or margin_m != 0.0 or margin_b != 0.0:
-        if margin_a == 1.0 and margin_m == 0.0:
-            s_m = s * margin_b
-            new_zy = sel_cos_t - s_m
-        else:
-            cos_value = sel_cos_t / s
-            thea = tf.acos(cos_value)
-            thea_ax = thea * margin_a
-            thea_ax_m = thea_ax + margin_m
-            #condition calculate
-            threshold_m = tf.cos(margin_m)
-            thres_cos = tf.cos(thea_ax) + threshold_m
-            #get the value margin_a* t+margin_m > pi
-            zy_keep = tf.sin(thea_ax_m) - 1
-            #get out
-            new_zy = tf.cos(thea_ax_m)
-            bg = tf.zeros_like(thres_cos)
-            body = tf.where(tf.greater(thres_cos,bg),new_zy,zy_keep)
-            body = body - margin_b
-            new_zy = body * s
+    if margin_a != 1.0 and margin_m != 0.0 and margin_b != 0.0:
+        cos_value = sel_cos_t / s
+        thea = tf.acos(cos_value)
+        thea_ax = thea * margin_a
+        thea_ax_m = thea_ax + margin_m
+        #condition calculate
+        threshold_m = tf.cos(margin_m)
+        thres_cos = tf.cos(thea_ax) + threshold_m
+        #get the value margin_a* t+margin_m > pi
+        zy_keep = tf.sin(thea_ax_m) - 1
+        #get out
+        new_zy = tf.cos(thea_ax_m)
+        bg = tf.zeros_like(thres_cos)
+        body = tf.where(tf.greater(thres_cos,bg),new_zy,zy_keep)
+        body = body - margin_b
+        new_zy = body * s
+    elif margin_a == 1.0 and margin_m == 0.0:
+        s_m = s * margin_b
+        new_zy = sel_cos_t - s_m
     updated_logits = tf.add(zy, tf.scatter_nd(ordinal_y, tf.subtract(new_zy, sel_cos_t), zy.get_shape()))
     '''
     loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=labels, logits=updated_logits))

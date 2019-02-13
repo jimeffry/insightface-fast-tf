@@ -19,9 +19,9 @@ cfgs.BIN_DATA = 0 # whether read image data from binary
 cfgs.CLS_NUM = 85164 
 cfgs.IMGAUG = 0
 # ---------------------------------------- System_config
-cfgs.NET_NAME = 'lenet5'#'resnet100'  # 'mobilenetv2' 'resnet50' 'lenet5'
-cfgs.SHOW_TRAIN_INFO_INTE = 100
-cfgs.SMRY_ITER = 250
+cfgs.NET_NAME = 'mobilenetv2'#'resnet100'  # 'mobilenetv2' 'resnet50' 'lenet5'
+cfgs.SHOW_TRAIN_INFO_INTE = 1000
+cfgs.SMRY_ITER = 2000
 cfgs.DATASET_NAME = 'MS1M' #'Mobile' 'Prison' FaceAnti Fruit
 cfgs.DATASET_LIST = ['Prison', 'WiderFace','Mobile','FaceAnti','Fruit','MS1M'] 
 cfgs.DATA_NAME = ['normal','fake','monitor','telecontroller'] 
