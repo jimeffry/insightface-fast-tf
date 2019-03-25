@@ -1,0 +1,1 @@
+from nets.L_Resnet_E_IR_MGPU import get_resnet

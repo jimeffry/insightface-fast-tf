@@ -44,7 +44,9 @@ def get_parser():
 
 def average_gradients(tower_grads):
   """Calculate the average gradient for each shared variable across all towers.
+
   Note that this function provides a synchronization point across all towers.
+
   Args:
     tower_grads: List of lists of (gradient, variable) tuples. The outer list
       is over individual gradients. The inner list is over the gradient
@@ -61,6 +63,7 @@ def average_gradients(tower_grads):
     for g, _ in grad_and_vars:
       # Add 0 dimension to the gradients to represent the tower.
       expanded_g = tf.expand_dims(g, 0)
+
       # Append on a 'tower' dimension which we will average over below.
       grads.append(expanded_g)
 
@@ -81,7 +84,7 @@ if __name__ == '__main__':
     # os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     # 1. define global parameters
     args = get_parser()
-    global_step = tf.train.create_global_step()
+    global_step = tf.Variable(name='global_step', initial_value=0, trainable=False)
     inc_op = tf.assign_add(global_step, 1, name='increment_global_step')
     trainable = tf.placeholder(name='trainable_bn', dtype=tf.bool)
     images = tf.placeholder(name='img_inputs', shape=[None, *args.image_size, 3], dtype=tf.float32)
