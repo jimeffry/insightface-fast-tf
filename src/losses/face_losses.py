@@ -100,7 +100,7 @@ def combine_loss(embedding, labels, class_num, margin_a, margin_m, margin_b, s):
     ordinal_y = tf.stack([ordinal, labels], axis=1)
     zy = cos_t * s
     sel_cos_t = tf.gather_nd(zy, ordinal_y)
-    if margin_a != 1.0 and margin_m != 0.0 and margin_b != 0.0:
+    if margin_m != 0.0:
         cos_value = sel_cos_t / s
         thea = tf.acos(cos_value)
         thea_ax = thea * margin_a
