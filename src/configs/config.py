@@ -16,19 +16,19 @@ cfgs = EasyDict()
 
 #------------------------------------------ convert data to tfrecofr config
 cfgs.BIN_DATA = 0 # whether read image data from binary
-cfgs.CLS_NUM = 85164 
+cfgs.CLS_NUM = 10572 #85164 
 cfgs.IMGAUG = 0
 # ---------------------------------------- System_config
-cfgs.NET_NAME = 'mobilenetv2'#'resnet100'  # 'mobilenetv2' 'resnet50' 'lenet5'
+cfgs.NET_NAME = 'resnet100'  # 'mobilenetv2' 'resnet50' 'lenet5'
 cfgs.SHOW_TRAIN_INFO_INTE = 1000
-cfgs.SMRY_ITER = 2000
-cfgs.DATASET_NAME = 'MS1M' #'Mobile' 'Prison' FaceAnti Fruit
-cfgs.DATASET_LIST = ['Prison', 'WiderFace','Mobile','FaceAnti','Fruit','MS1M'] 
+cfgs.SMRY_ITER = 4000
+cfgs.DATASET_NAME = 'WebFace' #'Mobile' 'Prison' FaceAnti Fruit
+cfgs.DATASET_LIST = ['Prison', 'WiderFace','Mobile','FaceAnti','Fruit','MS1M','WebFace'] 
 cfgs.DATA_NAME = ['normal','fake','monitor','telecontroller'] 
 
 # ------------------------------------------ Train config
 cfgs.RD_MULT = 0
-cfgs.MODEL_PREFIX = 'mobilenetv2-1_0'
+cfgs.MODEL_PREFIX = 'modelv100-1' #'mobilenetv2-1_0'
 cfgs.IMG_SIZE = [112,112]
 cfgs.FEATURE_LEN = 512
 cfgs.BN_USE = True 
